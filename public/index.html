@@ -32,7 +32,7 @@
 
       L.Control.bufferSize = L.Control.extend({
         options: {
-          position: 'bottomleft'
+          position: 'topright'
         },
 
         onAdd: function(map){
@@ -44,7 +44,7 @@
           var group = L.DomUtil.create('div', 'form-group', this.form);
 
           this.title = L.DomUtil.create('p', '', group);
-          this.title.innerHTML = 'Buffer size, meters';
+          this.title.innerHTML = 'Buffer size';
 
           this.input = L.DomUtil.create('input', '', group);
           this.input.type = 'text';
