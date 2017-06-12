@@ -30,13 +30,61 @@
       L.tileLayer.provider('OpenStreetMap.BlackAndWhite').addTo(map);
       map.setView([59.311162, 18.074806], 13);
 
+      L.Control.bufferSize = L.Control.extend({
+        options: {
+          position: 'bottomleft'
+        },
+
+        onAdd: function(map){
+          var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+          container.style.backgroundColor = 'white';
+          container.style.padding = '10px';
+
+          this.form = L.DomUtil.create('form', 'form', container);
+          var group = L.DomUtil.create('div', 'form-group', this.form);
+
+          this.title = L.DomUtil.create('p', '', group);
+          this.title.innerHTML = 'Buffer size, meters';
+
+          this.input = L.DomUtil.create('input', '', group);
+          this.input.type = 'text';
+          this.input.value = 200;
+
+          this.dropdown = L.DomUtil.create('select', '', group);
+
+          this.dropdown.m = L.DomUtil.create('option', '', this.dropdown);
+          this.dropdown.m.value = 'meters';
+          this.dropdown.m.innerHTML = 'Meters';
+
+          this.dropdown.km = L.DomUtil.create('option', '', this.dropdown);
+          this.dropdown.km.value = 'kilometers';
+          this.dropdown.km.innerHTML = 'Kilometers';
+
+
+
+          L.DomEvent.disableClickPropagation(container);
+
+          L.DomEvent.disableClickPropagation(container);
+
+          L.DomEvent.disableClickPropagation(container);
+          return container;
+
+        },
+      });
+
+      var buffControl = new L.Control.bufferSize();
+      map.addControl(buffControl);
+
       map.on('click', function(e){
 
         L.marker(e.latlng).addTo(map);
 
         var point = {
           "type": "Feature",
-          "properties": {},
+          "properties": {
+            "bufferSize": buffControl.input.value,
+            "bufferUnit": buffControl.dropdown.value
+          },
           "geometry": {
             "type": "Point",
             "coordinates": [e.latlng.lng, e.latlng.lat]
@@ -55,7 +103,7 @@
         console.log(buffpoint);
         var layer = L.geoJSON(buffpoint, {
           style: {
-            color: "blue"
+            color: "steelblue"
           }
         }).addTo(map);
       }

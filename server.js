@@ -14,6 +14,6 @@ app.use(bodyParser.json());
 app.post('/bufferpoint', function(req, res){
   console.log(req.body);
   point = req.body;
-  var buffered = buffer(point, 200, 'meters');
+  var buffered = buffer(point, +point.properties.bufferSize, point.properties.bufferUnit);
   res.json(buffered);
 });
